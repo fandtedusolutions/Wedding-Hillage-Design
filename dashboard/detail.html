@@ -1,0 +1,82 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}{{ config.name_singular }} Details{% endblock %}
+{% block page_title %}{{ config.name_singular }} Details{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">View full record information</p>{% endblock %}
+
+{% block content %}
+<div class="action-bar">
+    <a href="{% url 'dashboard_model_list' slug=config.slug %}" class="btn-wh-outline btn-wh-sm">
+        <i class="fa-solid fa-arrow-left"></i> Back to List
+    </a>
+    <a href="{% url 'dashboard_model_edit' slug=config.slug pk=obj.pk %}" class="btn-wh-primary btn-wh-sm">
+        <i class="fa-solid fa-pen"></i> Edit
+    </a>
+    {% if config.has_active_toggle %}
+    <form method="post" action="{% url 'dashboard_model_toggle_active' slug=config.slug pk=obj.pk %}" class="d-inline">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        {% if obj.is_active %}
+        <button type="submit" class="btn-wh-outline-gold btn-wh-sm">
+            <i class="fa-solid fa-ban"></i> Deactivate
+        </button>
+        {% else %}
+        <button type="submit" class="btn-wh-outline btn-wh-sm" style="border-color: var(--wh-success); color: var(--wh-success);">
+            <i class="fa-solid fa-circle-check"></i> Activate
+        </button>
+        {% endif %}
+    </form>
+    {% endif %}
+    <form method="post" action="{% url 'dashboard_model_delete' slug=config.slug pk=obj.pk %}" class="d-inline ms-auto" onsubmit="return confirm('Delete this item permanently?');">
+        {% csrf_token %}
+        <button type="submit" class="btn-wh-outline btn-wh-sm" style="border-color: var(--wh-danger); color: var(--wh-danger);">
+            <i class="fa-solid fa-trash"></i> Delete
+        </button>
+    </form>
+</div>
+
+<div class="dashboard-card">
+    <div class="card-header">
+        <h5><i class="fa-solid fa-circle-info me-2" style="color: var(--wh-accent);"></i>Record Details</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            {% for field in fields %}
+            <div class="col-md-6{% if field.is_image or field.is_html %} col-12{% endif %}">
+                <div class="detail-field">
+                    <label>{{ field.label }}</label>
+                    {% if field.is_media and field.value %}
+                        {% if field.is_image %}
+                        <div class="detail-image mt-2">
+                            <img src="{{ field.value.url }}" alt="{{ obj }}">
+                        </div>
+                        {% elif field.is_video %}
+                        <div class="detail-image mt-2">
+                            <video class="w-100" controls>
+                                <source src="{{ field.value.url }}">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        {% else %}
+                        <p><a href="{{ field.value.url }}" target="_blank">Download file</a></p>
+                        {% endif %}
+                    {% elif field.is_image and field.value %}
+                    <div class="detail-image mt-2">
+                        <img src="{{ field.value.url }}" alt="{{ obj }}">
+                    </div>
+                    {% elif field.is_html and field.value %}
+                    {% if field.value %}
+                    <p><span class="badge-wh-active">Yes / Active</span></p>
+                    {% else %}
+                    <p><span class="badge-wh-inactive">No / Inactive</span></p>
+                    {% endif %}
+                    {% else %}
+                    <p>{{ field.value|default:"—" }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

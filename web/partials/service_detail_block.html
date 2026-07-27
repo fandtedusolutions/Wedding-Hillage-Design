@@ -1,0 +1,42 @@
+<div class="sis-service-detail-page-section section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="sisf-sis-section-title sis-section-title mb-0">
+                    <h2 class="sisf-m-title sis-text-anime-style-3">{{ service.title }}</h2>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <img src="{{ service.detail_image_1.url }}" class="services-image" alt="{{ service.title }}">
+            </div>
+            <div class="col-lg-8">
+                <div class="sisf-e-inner">
+                    <div class="sis-e-content--inner">
+                        <div class="sisf-sis-section-title sis-section-title"></div>
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                {{ service.detail_content|safe }}
+                            </div>
+                            <div class="col-lg-5">
+                                {% if service.detail_media %}
+                                <div class="sis-e-image">
+                                    {% if service.is_detail_video %}
+                                    <figure class="sis-image-anime sis-reveal" style="transform: translate(0px, 0px); opacity: 1; visibility: inherit;">
+                                        <video class="w-100" autoplay muted loop playsinline style="border: 3px solid rgb(189, 108, 37); padding: 10px; border-radius: 100px 0px 50px;">
+                                            <source src="{{ service.detail_media.url }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </figure>
+                                    {% else %}
+                                    <img src="{{ service.detail_media.url }}" class="w-100 services-image mt-0" alt="{{ service.title }}" style="transform: translate(0px, 0px);">
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

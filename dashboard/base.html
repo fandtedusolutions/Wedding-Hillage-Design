@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard{% endblock %} | Wedding Hillage</title>
+    <link href="{% static 'web/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'web/css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static 'web/css/dashboard.css' %}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="dashboard-body">
+    {% if user.is_authenticated and user.is_staff %}
+    <div class="dashboard-wrapper">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <a href="{% url 'dashboard_index' %}" class="sidebar-brand-link">
+                    <img src="{% static 'web/images/logo/logooo.png' %}" alt="Wedding Hillage" class="sidebar-brand-logo">
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{% url 'dashboard_index' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard_index' %}active{% endif %}">
+                    <i class="fa-solid fa-gauge-high"></i> Overview
+                </a>
+                <p class="sidebar-heading">Content</p>
+                {% for item in dashboard_models %}
+                <a href="{% url 'dashboard_model_list' slug=item.slug %}"
+                   class="nav-link {% if config and config.slug == item.slug %}active{% endif %}">
+                    <i class="fa-solid fa-images"></i> {{ item.name }}
+                </a>
+                {% endfor %}
+            </nav>
+            <div class="sidebar-footer">
+                <a href="{% url 'index' %}" class="nav-link" target="_blank">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> View Website
+                </a>
+                <a href="{% url 'dashboard_logout' %}" class="nav-link text-danger">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
+            </div>
+        </aside>
+        <main class="dashboard-main">
+            <header class="dashboard-topbar">
+                <div>
+                    <h1 class="page-title">{% block page_title %}Dashboard{% endblock %}</h1>
+                    {% block page_subtitle %}{% endblock %}
+                </div>
+                <div class="topbar-right">
+                    <div class="user-pill">
+                        <div class="user-avatar">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <span>{{ user.get_username }}</span>
+                    </div>
+                </div>
+            </header>
+            <div class="dashboard-content">
+                {% if messages %}
+                <div class="messages-wrap">
+                    {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+    {% else %}
+    {% block auth_content %}{% endblock %}
+    {% endif %}
+    <script src="{% static 'web/js/bootstrap.min.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

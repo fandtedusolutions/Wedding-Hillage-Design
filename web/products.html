@@ -1,0 +1,42 @@
+{% extends "web/partials/base.html" %}
+{% load static %}
+
+{% block title %}Products | Wedding Hillage{% endblock %}
+
+{% block content %}
+<div class="about-header mt-5">
+    <div class="container">
+        <figure class=" sis-reveal">
+
+
+            <img src="{% static 'web/image/PRODUCT-HEADER.png' %}" class="img-fluid cover-image-inner">
+        </figure>
+
+    </div>
+</div>
+
+
+<section class="wb-products-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="sisf-sis-section-title sis-section-title text-center">
+                    <h5 class="sisf-m-subtitle sis-text-anime-style-3">
+                        OUR PRODUCTS
+                    </h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {% for product in products %}
+            {% include "web/partials/products_page_card.html" with product=product %}
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No products available yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

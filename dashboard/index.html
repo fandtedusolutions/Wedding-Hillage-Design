@@ -1,0 +1,86 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Overview{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">Manage all website content from one place</p>{% endblock %}
+
+{% block content %}
+<div class="welcome-banner">
+    <h2>Welcome, <span class="welcome-accent">{{ user.get_username }}</span></h2>
+    <p>Your Wedding Hillage admin dashboard — update content and keep your website looking beautiful.</p>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-database"></i></div>
+            <div>
+                <h3>{{ total_models }}</h3>
+                <p>Content Types</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
+            <div>
+                <h3>{{ model_stats|length }}</h3>
+                <p>Manageable Modules</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card stat-live">
+            <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <div>
+                <h3>Live</h3>
+                <p>Website Status</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-card">
+    <div class="card-header">
+        <h5><i class="fa-solid fa-table-columns me-2" style="color: var(--wh-accent);"></i>All Content Modules</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            {% for item in model_stats %}
+            <div class="col-md-6 col-lg-4">
+                <div class="model-card">
+                    <div class="model-card-header">
+                        <div class="model-card-icon">
+                            <i class="fa-solid fa-images"></i>
+                        </div>
+                        <h6 class="model-card-title">{{ item.config.name }}</h6>
+                    </div>
+                    <div class="model-stats-row">
+                        <div class="model-stat-item">
+                            <span class="num">{{ item.total }}</span>
+                            <span class="lbl">Total</span>
+                        </div>
+                        <div class="model-stat-item">
+                            <span class="num" style="color: var(--wh-success);">{{ item.active }}</span>
+                            <span class="lbl">Active</span>
+                        </div>
+                        <div class="model-stat-item">
+                            <span class="num" style="color: var(--wh-text-muted);">{{ item.inactive }}</span>
+                            <span class="lbl">Inactive</span>
+                        </div>
+                    </div>
+                    <div class="model-card-actions">
+                        <a href="{% url 'dashboard_model_list' slug=item.config.slug %}" class="btn-wh-outline-gold btn-wh-sm">
+                            <i class="fa-solid fa-list"></i> View All
+                        </a>
+                        <a href="{% url 'dashboard_model_add' slug=item.config.slug %}" class="btn-wh-primary btn-wh-sm">
+                            <i class="fa-solid fa-plus"></i> Add New
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

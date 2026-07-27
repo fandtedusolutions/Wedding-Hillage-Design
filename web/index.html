@@ -1,0 +1,552 @@
+{% extends "web/partials/base.html" %}
+{% load static %}
+
+{% block title %}Wedding Hillage{% endblock %}
+
+{% block head_js %}
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="sis-hero hero-slider mt-3 sis-br-radius home-slider">
+      <div class="hero-slider-layout">
+         <div class="swiper">
+            <div class="swiper-wrapper">
+               {% for banner in banners %}
+               <div class="swiper-slide">
+                  <div class="hero-slide align-items-center pb-0">
+                     <div class="hero-slider-image">
+                        <img src="{{ banner.image.url }}" alt="{{ banner.alt_text|default:banner.title }}">
+                     </div>
+                     <div class="container">
+                        {% if banner.title %}
+                        <div class="hero-content">
+                           <!-- <h2>{{ banner.title }}</h2> -->
+                        </div>
+                        {% endif %}
+                     </div>
+                  </div>
+               </div>
+               {% empty %}
+               <div class="swiper-slide">
+                  <div class="hero-slide align-items-center pb-0">
+                     <div class="hero-slider-image">
+                        <img src="{% static 'web/image/webbb.jpeg' %}" alt="Wedding Hillage">
+                     </div>
+                  </div>
+               </div>
+               {% endfor %}
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="sis-about-us-section section">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-6">
+               <!-- Setion Title Start -->
+               <div class="sisf-sis-section-title sis-section-title">
+                  <h5 class="sisf-m-subtitle sis-text-anime-style-3">About Wedding Hillage
+                  </h5>
+                  <h2 class="sisf-m-title sis-text-anime-style-3">We Turn Dreams <br>Into
+                     Lifelong Memories</h2>
+               </div>
+               <!-- Setion Title End -->
+            </div>
+            <div class="col-lg-6">
+               <!-- Setion Title Start -->
+               <div class="sisf-sis-section-title sis-section-title">
+                  <div class="sisf-m-text" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1200">
+                     <p>Wedding Hillage is a premier wedding planning and event management company dedicated to creating
+                        extraordinary celebrations that reflect your unique love story. With over a decade of
+                        experience, we have become a trusted name in crafting weddings that are as beautiful as they are
+                        personal.</p>
+                  </div>
+                  <div class="sisf-m-button pt-4" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1200">
+                     <a href="" class="sis-btn-default"
+                        style="border-color: #bd6c25 !important; color: #bd6c25 !important;">Learn More </a>
+                  </div>
+               </div>
+               <!-- Setion Title End -->
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-lg-3 col-md-6">
+               <div class="sis-about-content-right sis-page-background radius" data-aos="fade-up" data-aos-delay="500"
+                  data-aos-duration="1200"
+                  style="background-image:url('{% static 'web/image/bggggggggg.jpg.jpeg' %}');background-position:center;background-size:cover;background-repeat:no-repeat;">
+                  <div class="sisf-e-inner">
+                     <div class="sisf-rating-image-with-content">
+                        <div class="sisf-rating-image mb-3" data-aos="fade-up" data-aos-delay="100"
+                           data-aos-duration="1200">
+                           <!-- <figure class="sis-image-anime">
+                              <img src="{% static 'web/images/profiles.png' %}" alt="Wedding Hillage">
+                           </figure> -->
+                        </div>
+
+                     </div>
+                     <div class="sis-e-content">
+                        <div class="sis-e-content-inner">
+
+                           <div class="sis-e-text">
+                              <p class="text-white mb-0">Experienced team of wedding specialists with a personalised
+                                 approach
+                                 End-to-end planning and coordination from engagement to reception
+                                 Trusted vendor network ensuring quality across all services</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-6">
+               <div class="sis-about-content-left" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1200">
+                  <div class="sisf-e-inner position-relative p-0">
+                     <div class="sis-e-about-image">
+                        <figure class="sis-image-anime">
+                           <img src="{% static 'web/image/about/aaaaaaa.png' %}" class="w-100 radius" alt="Wedding Hillage"
+                              style="height: 422px !important;object-fit:cover;">
+                        </figure>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+               <div class="sis-about-content-center  sis-comman-background radius" data-aos="fade-up"
+                  data-aos-delay="300" data-aos-duration="1200"
+                  style="background-image:url('{% static 'web/image/gree.jpeg' %}');background-position:center;background-size:cover;background-repeat:no-repeat;">
+                  <div class="sisf-e-inner">
+                     <div class="sis-e-icon-top">
+                        <!-- <figure>
+                           <img src="{% static 'web/images/about-icon.svg' %}" alt="Wedding Hillage">
+                        </figure> -->
+                     </div>
+                     <div class="sis-e-content">
+                        <div class="sis-e-content-inner">
+
+                           <div class="sis-e-text">
+                              <p class="text-white mb-0">Our passionate team of planners, designers, and coordinators
+                                 work tirelessly to ensure every detail is perfect — from the first bloom of the décor
+                                 to the last note of the evening.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+
+         <div class="sis-e-about-counter-bottom">
+            <div class="row">
+
+
+               <!-- Counter Item 1 -->
+               <div class="col-lg-3 col-md-6">
+                  <div class="sis-counter-item" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1200">
+                     <div class=" sis-counter-title">
+                     <h2 class="d-flex align-items-center">
+                        <span class="sis-counter sisf-e-colored">750</span>
+                        <span class="sisf-digit-label sisf-e-colored">+</span>
+                     </h2>
+                  </div>
+                  <div class="sis-counter-content">
+                     <span class="sisf-content">Weddings Captured</span>
+                  </div>
+               </div>
+            </div>
+
+            <!-- Counter Item 2 -->
+            <div class="col-lg-3 col-md-6">
+               <div class="sis-counter-item" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1200">
+                  <div class="sis-counter-title">
+                     <h2 class="d-flex align-items-center">
+                        <span class="sis-counter sisf-e-colored">98</span>
+                        <span class="sisf-digit-label sisf-e-colored">%</span>
+                     </h2>
+                  </div>
+                  <div class="sis-counter-content">
+                     <span class="sisf-content">Client Satisfaction</span>
+                  </div>
+               </div>
+            </div>
+
+            <!-- Counter Item 3 -->
+            <div class="col-lg-3 col-md-6">
+               <div class="sis-counter-item" data-aos="fade-up" data-aos-delay="500" data-aos-duration="1200">
+                  <div class="sis-counter-title">
+                     <h2 class="d-flex align-items-center">
+                        <span class="sis-counter sisf-e-colored">2500</span>
+                        <span class="sisf-digit-label sisf-e-colored">+</span>
+                     </h2>
+                  </div>
+                  <div class="sis-counter-content">
+                     <span class="sisf-content">Happy Couples Served</span>
+                  </div>
+               </div>
+            </div>
+
+            <!-- Counter Item 4 -->
+            <div class="col-lg-3 col-md-6">
+               <div class="sis-counter-item" data-aos="fade-up" data-aos-delay="700" data-aos-duration="1200">
+                  <div class="sis-counter-title">
+                     <h2 class="d-flex align-items-center">
+                        <span class="sis-counter sisf-e-colored">12</span>
+                        <span class="sisf-digit-label sisf-e-colored">+</span>
+                     </h2>
+                  </div>
+                  <div class="sis-counter-content">
+                     <span class="sisf-content">Years of Experience</span>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+   </div>
+   <section class="sis-services-section position-relative section" style="background: #914909;">
+
+
+      <div class="container">
+
+         <div class="section-title">
+            <h2 class="sisf-m-title sis-text-anime-style-3">
+               Our Signature Services
+            </h2>
+            <p>
+               From heartfelt moments to grand celebrations, we provide complete
+               wedding experiences crafted with creativity and care.
+            </p>
+         </div>
+
+         <div class="services-grid">
+            {% for service in services %}
+            {% cycle 'paper-one' 'paper-two' 'paper-three' as card_style silent %}
+            {% include "web/partials/home_service_card.html" with card_style=card_style %}
+            {% empty %}
+            <div class="service-card paper-one">
+               <span class="service-label">PHOTOGRAPHY</span>
+               <div class="service-image">
+                  <img src="{% static 'web/image/about-new.webp' %}" alt="Wedding Photography">
+               </div>
+               <p>Authentic, candid, and timeless photography that captures every emotion, detail, and unforgettable memory.</p>
+            </div>
+            {% endfor %}
+         </div>
+         <div class="row justify-content-center align-items-center mt-4">
+            <div class="col-lg-3 col-md-6 text-center">
+               <div class="sisf-m-button">
+                  <a href="{% url 'services' %}" class="sis-btn-default">
+                     Learn More
+                  </a>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <div class="sis-pricing-plans-section sis-br-radius sisf-section">
+      <div class="container">
+         <div class="row">
+            <div class="col-12">
+               <!-- Setion Title Start -->
+               <div class="sisf-sis-section-title text-center sis-section-title">
+                  <h5 class="sisf-m-subtitle sis-text-anime-style-3">
+                     FEATURED WEDDING STORY
+                  </h5>
+                  <h2 class="sisf-m-title sis-text-anime-style-3">
+                     Couples Who Trusted Us <br> With Their Big Day
+                  </h2>
+
+               </div>
+               <!-- Setion Title End -->
+            </div>
+         </div>
+         <div class="row">
+            {% for couple in featured_couples %}
+            {% include "web/partials/featured_couple_card.html" with couple=couple %}
+            {% empty %}
+            <div class="col-lg-3 col-md-6">
+               <div class="sisf-sis-team-member sisf-item-layout-info-from-bottom mb-4 pb-2 page" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1200">
+                  <div class="sisf-e-inner position-relative">
+                     <div class="sis-image-with-icons position-relative">
+                        <div class="sis-team-members-img">
+                           <figure class="sis-image-anime">
+                              <img src="{% static 'web/image/couple-4.webp' %}" class="w-100" alt="Featured couple">
+                           </figure>
+                        </div>
+                     </div>
+                     <div class="sis-team-member-content">
+                        <div class="contents-out">
+                           <h4 class="sisf-m-title mb-1">Farha and Shamil</h4>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+
+   <div class="sis-our-progress--section sis-comman-background pb-0 section ">
+      <div class="container">
+         <div class="row align-items-center">
+            <div class="col-lg-6 pb-5 mb-4">
+
+               <div class="sisf-sis-section-title mb-4 sis-section-title">
+
+                  <h5 class="sisf-subtitle text-white sis-text-anime-style-3">
+                     OUR PROCESS
+                  </h5>
+
+                  <h2 class="sisf-m-title text-white sis-text-anime-style-3">
+                     Turning Your <span style="color: #f6e8d5;">Special Moments</span> Into Timeless Memories
+                  </h2>
+               </div>
+               <!-- Section Title End -->
+
+               <div class="sisf-sis-listing-items" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1200">
+
+                  <p class="mb-2">
+                     <span class="sisf-e-colored">
+                        <i class="fa-solid pe-3 fa-check"></i>
+                     </span>
+                     <span class="text-white">Personalized Wedding Consultation</span>
+                  </p>
+
+                  <p class="mb-2">
+                     <span class="sisf-e-colored">
+                        <i class="fa-solid pe-3 fa-check"></i>
+                     </span>
+                     <span class="text-white">Creative Photography & Cinematography</span>
+                  </p>
+
+                  <p class="mb-2">
+                     <span class="sisf-e-colored">
+                        <i class="fa-solid pe-3 fa-check"></i>
+                     </span>
+                     <span class="text-white">Candid Moments & Traditional Coverage</span>
+                  </p>
+
+                  <p class="mb-0">
+                     <span class="sisf-e-colored">
+                        <i class="fa-solid pe-3 fa-check"></i>
+                     </span>
+                     <span class="text-white">Premium Editing & Album Design</span>
+                  </p>
+
+               </div>
+
+               <div class="sisf-m-button pt-4" data-aos="fade-up" data-aos-delay="500" data-aos-duration="1200">
+
+                  <a href="" class="sis-btn-default">
+                     Book Your Event
+
+                  </a>
+
+               </div>
+
+            </div>
+
+            <div class="col-lg-5 p-0">
+
+               <div class="sis-our-process-image-right position-relative">
+
+                  <img src="{% static 'web/image/eeee.png' %}" class="w-100" alt="Wedding Photography">
+
+
+
+               </div>
+
+            </div>
+
+         </div>
+      </div>
+   </div>
+
+   <div class="sisf-product-list-section sisf-section">
+      <div class="container">
+         <div class="row">
+            <div class="col-12 position-relative text-center">
+               <div class="sisf-sis-section-title sis-section-title">
+                  <h5 class="sisf-m-subtitle sis-text-anime-style-3">
+                     OUR PRODUCTS
+                  </h5>
+                  <h2 class="sisf-m-title sis-text-anime-style-3">
+                     Special Products<br>
+                     For You
+                  </h2>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            {% for product in products %}
+            {% widthratio forloop.counter0 1 200 as aos_offset %}
+            {% include "web/partials/home_product_card.html" with product=product aos_delay=aos_offset|add:100 %}
+            {% empty %}
+            <div class="col-12 text-center">
+               <p class="text-muted">No products available yet.</p>
+            </div>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+
+   <div class="sis-testimonial-section sis-br-radius sis-comman-background section">
+      <div class="container">
+         <div class="row align-items-center">
+            <div class="col-lg-10 col-md-9">
+               <div class="sisf-sis-section-title sis-section-title">
+                  <h5 class="sisf-subtitle text-white sis-text-anime-style-3">
+                     Testimonials
+                  </h5>
+
+                  <h2 class="sisf-m-title text-white sis-text-anime-style-3">
+                     <span style="color: #f6e8d5;">
+                        Wedding Hillage is trusted <br>by 500+ happy couples.
+                     </span>
+                  </h2>
+
+                  <div class="sisf-m-text" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1200">
+                     <p class="text-white mb-0">
+                        Every wedding is unique, and we're honored to be part of hundreds of beautiful love stories.
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-lg-3">
+               <div class="sisf-testimonial-left-content sis-page-background radius" data-aos="fade-right"
+                  data-aos-delay="200" data-aos-duration="1200">
+                  <div class="sisf-e-inner">
+                     <img src="{% static 'web/image/cntsus.webp' %}" class="w-100 radius" alt="Happy Wedding Couple"
+                        style="height: 280px; object-fit: cover;">
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-lg-9">
+               <div class="testimonial-right page" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1200">
+                  <div class="comman-swiper-slider testimonial-slider">
+                     <div class="swiper">
+                        <div class="swiper-wrapper">
+                           {% for testimonial in testimonials %}
+                           {% include "web/partials/testimonial_slide.html" with testimonial=testimonial %}
+                           {% empty %}
+                           <div class="swiper-slide">
+                              <div class="sisf-e-inner p-4 radius position-relative">
+                                 <div class="sisf-e-top">
+                                    <div class="sisf-e-discription">
+                                       <h5 class="text-white mb-0">No testimonials available yet.</h5>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           {% endfor %}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <sec tion class="wb-pricing">
+      <h2 class="wb-pricing__title">Photography Packages</h2>
+      <p class="wb-pricing__sub">Every love story deserves to be remembered beautifully</p>
+
+      <div class="wb-pricing__grid">
+         {% for package in pricing_packages %}
+         {% include "web/partials/pricing_package_card.html" with package=package %}
+         {% empty %}
+         <p class="text-muted text-center w-100">No pricing packages available yet.</p>
+         {% endfor %}
+      </div>
+   </section>
+
+   <div class="sis-contact-section section">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-4">
+               <div class="sis-right-contact-image position-relative">
+                  <figure class="sis-reveal sis-image-anime"
+                     style="transform: translate(0px, 0px); opacity: 1; visibility: inherit;">
+                     <img src="{% static 'web/image/contacttt.webp' %}" class="w-100" alt="" style="transform: translate(0px, 0px);">
+                  </figure>
+               </div>
+            </div>
+            <div class="col-lg-4">
+               <div class="sisf-opning-hours-bottom sis-comman-background radius p-3">
+                  {% include "web/partials/contact_info_index.html" %}
+               </div>
+
+               <img src="{% static 'web/image/plaan.webp' %}">
+            </div>
+            <div class="col-lg-4" id="contact-form">
+               <div class="sis-comman-bg p-4 radius">
+                  <div class="sisf-sis-section-title sis-section-title">
+                     <h5 class="sisf-m-subtitle bg-white sis-text-anime-style-3">
+                        Contact Us
+                     </h5>
+                     <h2 class="sisf-m-title sis-text-anime-style-3">
+                        Plan Your<br>
+                        Dream Wedding
+                     </h2>
+
+                     <div class="sisf-m-text">
+                        <p>
+                           Share your wedding details with us, and our team will get in touch to discuss photography,
+                           videography, catering, live streaming, and complete event planning services.
+                        </p>
+                     </div>
+                  </div>
+                  <div class="form-section">
+                     {% include "web/partials/contact_form.html" with contact_form=contact_form form_action=request.path %}
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+   <div class="sis-gallery-section section">
+      <div class="container-fluid p-0">
+         <div class="row">
+            <div class="col-12">
+               <div class="sisf-sis-gallery-layout">
+                  <div class="sis-gallery-items sis-page-gallery-box">
+                     {% for image in gallery_images %}
+                     <div class="gallery-item aos-init aos-animate" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'1' }}00"
+                        data-aos-duration="1200">
+                        <a href="{{ image.media.url }}">
+                           <figure class="sis-image-anime">
+                              <img src="{{ image.media.url }}" class="w-100" alt="{{ image.title|default:'Gallery image' }}">
+                           </figure>
+                        </a>
+                     </div>
+                     {% empty %}
+                     <div class="gallery-item aos-init aos-animate" data-aos="fade-up" data-aos-delay="100"
+                        data-aos-duration="1200">
+                        <a href="{% static 'web/image/gallery-1.webp' %}">
+                           <figure class="sis-image-anime">
+                              <img src="{% static 'web/image/gallery-1.webp' %}" class="w-100" alt="Gallery image">
+                           </figure>
+                        </a>
+                     </div>
+                     {% endfor %}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+{% endblock %}
+

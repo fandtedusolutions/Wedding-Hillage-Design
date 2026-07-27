@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="{% block meta_description %}{% endblock %}">
+   <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+   <meta name="robots" content="max-image-preview:large">
+   <title>{% block title %}Wedding Hillage{% endblock %}</title>
+   <link rel="shortcut icon" type="image/x-icon" href="{% static 'web/image/favicon.png' %}">
+   <link href="{% static 'web/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+   <link rel="stylesheet" href="{% static 'web/css/swiper-bundle.min.css' %}">
+   <link rel="stylesheet" href="{% static 'web/css/magnific-popup.css' %}">
+   <link href="{% static 'web/css/all.min.css' %}" rel="stylesheet" media="screen">
+   <link href="{% static 'web/css/slicknav.min.css' %}" rel="stylesheet">
+   <link href="{% static 'web/css/aos.css' %}" rel="stylesheet">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+   <link href="{% static 'web/css/custom.css' %}" rel="stylesheet" media="screen">
+   {% block extra_css %}{% endblock %}
+</head>
+<body>
+   {% include "web/partials/header.html" %}
+
+   {% if messages %}
+   <div class="container mt-3">
+      {% for message in messages %}
+      <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} alert-dismissible fade show" role="alert">
+         {{ message }}
+         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+   </div>
+   {% endif %}
+
+   {% block content %}{% endblock %}
+
+   {% include "web/partials/footer.html" %}
+
+   {% block head_js %}{% endblock %}
+   <script src="{% static 'web/js/jquery-3.7.1.min.js' %}"></script>
+   <script src="{% static 'web/js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'web/js/validator.min.js' %}"></script>
+   <script src="{% static 'web/js/jquery.slicknav.js' %}"></script>
+   <script src="{% static 'web/js/swiper-bundle.min.js' %}"></script>
+   <script src="{% static 'web/js/aos.js' %}"></script>
+   <script src="{% static 'web/js/jquery.waypoints.min.js' %}"></script>
+   <script src="{% static 'web/js/jquery.counterup.min.js' %}"></script>
+   <script src="{% static 'web/js/jquery.magnific-popup.min.js' %}"></script>
+   <script src="{% static 'web/js/gsap.min.js' %}"></script>
+   <script src="{% static 'web/js/magiccursor.js' %}"></script>
+   <script src="{% static 'web/js/cursor/cursor.js' %}"></script>
+   <script src="{% static 'web/js/ScrollTrigger.min.js' %}"></script>
+   <script src="{% static 'web/js/SplitText.js' %}"></script>
+   <script src="{% static 'web/js/script.js' %}"></script>
+   {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,29 @@
+<div class="wb-card{% if package.is_featured %} wb-card--featured{% endif %}">
+   {% if package.is_featured and package.badge_text %}
+   <span class="wb-badge">{{ package.badge_text }}</span>
+   {% endif %}
+   <p class="wb-card__label">{{ package.package_label }}</p>
+   <p class="wb-card__name">{{ package.name }}</p>
+   <div class="wb-card__price-row">
+      <span class="wb-card__currency">₹</span>
+      <span class="wb-card__price">{{ package.formatted_price }}</span>
+      <span class="wb-card__period">/ per day</span>
+   </div>
+   <div class="wb-card__divider"></div>
+   <ul class="wb-card__features">
+      {% for feature in package.feature_list %}
+      <li>
+         <svg class="wb-check" viewBox="0 0 16 16">
+            <polyline points="2.5,8 6,11.5 13.5,4.5" />
+         </svg>{{ feature }}
+      </li>
+      {% endfor %}
+   </ul>
+   {% if package.compliments_text %}
+   <div class="wb-card__compliments">
+      <p class="wb-card__comp-label">Compliments</p>
+      <p class="wb-card__comp-text">{{ package.compliments_text }}</p>
+   </div>
+   {% endif %}
+   <a href="{% url 'contact' %}" class="wb-btn{% if package.is_featured %} wb-btn--gold{% endif %}">Choose Plan</a>
+</div>

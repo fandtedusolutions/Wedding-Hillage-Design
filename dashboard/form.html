@@ -1,0 +1,121 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}{% if is_edit %}Edit{% else %}Add{% endif %} {{ config.name_singular }}{% endblock %}
+{% block page_title %}{% if is_edit %}Edit{% else %}Add New{% endif %} {{ config.name_singular }}{% endblock %}
+{% block page_subtitle %}
+<p class="page-subtitle">{% if is_edit %}Update existing record{% else %}Create a new record{% endif %}</p>
+{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% if is_edit %}{% url 'dashboard_model_detail' slug=config.slug pk=obj.pk %}{% else %}{% url 'dashboard_model_list' slug=config.slug %}{% endif %}" class="btn-wh-outline btn-wh-sm">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="dashboard-card">
+    <div class="card-header">
+        <h5>
+            <i class="fa-solid fa-{% if is_edit %}pen-to-square{% else %}plus-circle{% endif %} me-2" style="color: var(--wh-accent);"></i>
+            {% if is_edit %}Edit {{ config.name_singular }}{% else %}New {{ config.name_singular }}{% endif %}
+        </h5>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="form-section-title">
+                <i class="fa-solid fa-file-pen"></i> Record Information
+            </div>
+            <div class="row g-3">
+                {% for field in form %}
+                <div class="col-md-{% if field.field.widget.input_type == 'checkbox' or field.name == 'detail_media_type' %}12{% else %}6{% endif %}">
+                    <div class="mb-1">
+                        {% if field.field.widget.input_type == 'checkbox' %}
+                        <div class="form-check mt-2">
+                            {{ field }}
+                            <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        </div>
+                        {% elif field.name == 'detail_media_type' %}
+                        <label class="form-label">{{ field.label }}</label>
+                        <div class="detail-media-type-group" id="detail-media-type-group">
+                            {% for option in field %}
+                            <label class="detail-media-type-option">
+                                {{ option.tag }}
+                                <span>{{ option.choice_label }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.name == 'detail_media' or field.name == 'media' %}
+                        <div class="form-text" id="detail-media-hint">Upload an image or video file for the right column.</div>
+                        {% endif %}
+                        {% endif %}
+                        {% if field.help_text and field.name != 'detail_media' %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                        <div class="text-danger small mt-1"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <hr style="border-color: var(--wh-border-light); margin: 1.75rem 0;">
+            <div class="d-flex flex-wrap gap-2">
+                <button type="submit" class="btn-wh-primary">
+                    <i class="fa-solid fa-{% if is_edit %}floppy-disk{% else %}plus{% endif %}"></i>
+                    {% if is_edit %}Save Changes{% else %}Create {{ config.name_singular }}{% endif %}
+                </button>
+                {% if not is_edit %}
+                <button type="submit" name="save_and_add_another" value="1" class="btn-wh-outline-gold">
+                    <i class="fa-solid fa-plus"></i> Save and Add Another
+                </button>
+                {% endif %}
+                <a href="{% url 'dashboard_model_list' slug=config.slug %}" class="btn-wh-outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if config.slug == 'services' or config.slug == 'gallery-media' %}
+<script>
+(function () {
+    const mediaInput = document.getElementById('id_detail_media') || document.getElementById('id_media');
+    const typeInputs = document.querySelectorAll('input[name="detail_media_type"], input[name="media_type"]');
+    const hint = document.getElementById('detail-media-hint');
+    const options = document.querySelectorAll('.detail-media-type-option');
+
+    function setActiveOption() {
+        options.forEach(function (label) {
+            const input = label.querySelector('input[type="radio"]');
+            label.classList.toggle('is-active', input && input.checked);
+        });
+    }
+
+    function updateMediaField() {
+        const selected = document.querySelector('input[name="detail_media_type"]:checked') || document.querySelector('input[name="media_type"]:checked');
+        if (!selected || !mediaInput) return;
+
+        if (selected.value === 'video') {
+            mediaInput.accept = 'video/*';
+            if (hint) hint.textContent = 'Upload a video file (mp4, webm, mov) for the right column.';
+        } else {
+            mediaInput.accept = 'image/*';
+            if (hint) hint.textContent = 'Upload an image file for the right column.';
+        }
+        setActiveOption();
+    }
+
+    typeInputs.forEach(function (input) {
+        input.addEventListener('change', updateMediaField);
+    });
+
+    updateMediaField();
+})();
+</script>
+{% endif %}
+{% endblock %}

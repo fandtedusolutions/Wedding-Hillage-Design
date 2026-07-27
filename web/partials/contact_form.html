@@ -1,0 +1,58 @@
+<form class="p-0 m-0" method="post" action="{{ form_action }}" data-toggle="validator">
+   {% csrf_token %}
+   <input type="hidden" name="form_type" value="contact">
+
+   {% if contact_form.non_field_errors %}
+   <div class="alert alert-danger">{{ contact_form.non_field_errors }}</div>
+   {% endif %}
+
+   <div class="row">
+      <div class="col-md-6">
+         <div class="form-group" data-aos="fade-right" data-aos-delay="100" data-aos-duration="1200">
+            <div class="form-col">
+               {{ contact_form.name }}
+               {% if contact_form.name.errors %}
+               <div class="text-danger small mt-1">{{ contact_form.name.errors.0 }}</div>
+               {% endif %}
+            </div>
+         </div>
+      </div>
+
+      <div class="col-md-6">
+         <div class="form-group" data-aos="fade-right" data-aos-delay="200" data-aos-duration="1200">
+            <div class="form-col">
+               {{ contact_form.email }}
+               {% if contact_form.email.errors %}
+               <div class="text-danger small mt-1">{{ contact_form.email.errors.0 }}</div>
+               {% endif %}
+            </div>
+         </div>
+      </div>
+
+      <div class="col-md-6">
+         <div class="form-group" data-aos="fade-right" data-aos-delay="300" data-aos-duration="1200">
+            <div class="form-col">
+               {{ contact_form.phone }}
+               {% if contact_form.phone.errors %}
+               <div class="text-danger small mt-1">{{ contact_form.phone.errors.0 }}</div>
+               {% endif %}
+            </div>
+         </div>
+      </div>
+
+      <div class="col-md-6">
+         <div class="form-group" data-aos="fade-right" data-aos-delay="500" data-aos-duration="1200">
+            <div class="form-col">
+               {{ contact_form.venue }}
+               {% if contact_form.venue.errors %}
+               <div class="text-danger small mt-1">{{ contact_form.venue.errors.0 }}</div>
+               {% endif %}
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="sisf-m-btn pt-3" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1200">
+      <button type="submit" class="sis-btn-default">Send Inquiry</button>
+   </div>
+</form>

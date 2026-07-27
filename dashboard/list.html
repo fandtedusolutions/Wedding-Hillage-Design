@@ -1,0 +1,148 @@
+{% extends "dashboard/base.html" %}
+{% load dashboard_extras %}
+
+{% block title %}{{ config.name }}{% endblock %}
+{% block page_title %}{{ config.name }}{% endblock %}
+{% block page_subtitle %}<p class="page-subtitle">View, edit, and manage {{ config.name|lower }}</p>{% endblock %}
+
+{% block content %}
+<div class="dashboard-card mb-4 filter-card">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label"><i class="fa-solid fa-magnifying-glass me-1"></i> Search</label>
+                <input type="text" name="q" value="{{ search }}" class="form-control" placeholder="Search records...">
+            </div>
+            {% if config.has_active_toggle %}
+            <div class="col-md-3">
+                <label class="form-label"><i class="fa-solid fa-filter me-1"></i> Status</label>
+                <select name="status" class="form-select">
+                    <option value="all" {% if status == 'all' %}selected{% endif %}>All Records</option>
+                    <option value="active" {% if status == 'active' %}selected{% endif %}>Active Only</option>
+                    <option value="inactive" {% if status == 'inactive' %}selected{% endif %}>Inactive Only</option>
+                </select>
+            </div>
+            {% endif %}
+            <div class="col-md-4 d-flex gap-2">
+                <button type="submit" class="btn-wh-outline btn-wh-sm">
+                    <i class="fa-solid fa-filter"></i> Apply
+                </button>
+                {% if config.allow_add|default:True %}
+                <a href="{% url 'dashboard_model_add' slug=config.slug %}" class="btn-wh-primary btn-wh-sm">
+                    <i class="fa-solid fa-plus"></i> Add New
+                </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="dashboard-card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5><i class="fa-solid fa-table-list me-2" style="color: var(--wh-accent);"></i>{{ config.name }} List</h5>
+        <span class="badge-wh-inactive">{{ page_obj.paginator.count }} record{{ page_obj.paginator.count|pluralize }}</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table dashboard-table mb-0 align-middle">
+            <thead>
+                <tr>
+                    {% for field in list_fields %}
+                    <th>{{ field|title }}</th>
+                    {% endfor %}
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in page_obj %}
+                <tr>
+                    {% for field in list_fields %}
+                    <td>
+                        {% if field == 'is_active' %}
+                            {% if obj.is_active %}
+                            <span class="badge-wh-active"><i class="fa-solid fa-circle me-1" style="font-size: 0.5rem;"></i>Active</span>
+                            {% else %}
+                            <span class="badge-wh-inactive"><i class="fa-solid fa-circle me-1" style="font-size: 0.5rem;"></i>Inactive</span>
+                            {% endif %}
+                        {% elif field == 'created_at' %}
+                            {{ obj.created_at|date:"d M Y, h:i A" }}
+                        {% elif field == 'is_read' %}
+                            {% if obj.is_read %}
+                            <span class="badge-wh-active">Read</span>
+                            {% else %}
+                            <span class="badge-wh-inactive">New</span>
+                            {% endif %}
+                        {% else %}
+                            {{ obj|get_attr:field|default:"—" }}
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                    <td class="text-end">
+                        <div class="action-buttons">
+                            <a href="{% url 'dashboard_model_detail' slug=config.slug pk=obj.pk %}" class="btn-wh-icon icon-view" title="View">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                            {% if config.allow_edit|default:True %}
+                            <a href="{% url 'dashboard_model_edit' slug=config.slug pk=obj.pk %}" class="btn-wh-icon icon-edit" title="Edit">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+                            {% endif %}
+                            {% if config.has_active_toggle %}
+                            <form method="post" action="{% url 'dashboard_model_toggle_active' slug=config.slug pk=obj.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                {% if obj.is_active %}
+                                <button type="submit" class="btn-wh-icon icon-warn" title="Deactivate">
+                                    <i class="fa-solid fa-ban"></i>
+                                </button>
+                                {% else %}
+                                <button type="submit" class="btn-wh-icon icon-success" title="Activate">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </button>
+                                {% endif %}
+                            </form>
+                            {% endif %}
+                            <form method="post" action="{% url 'dashboard_model_delete' slug=config.slug pk=obj.pk %}" class="d-inline" onsubmit="return confirm('Delete this item permanently?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-wh-icon icon-danger" title="Delete">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="{{ list_fields|length|add:1 }}">
+                        <div class="empty-state">
+                            <i class="fa-solid fa-inbox"></i>
+                            {% if config.allow_add|default:True %}
+                            <p>No records found. <a href="{% url 'dashboard_model_add' slug=config.slug %}">Add your first {{ config.name_singular|lower }}</a></p>
+                            {% else %}
+                            <p>No records found.</p>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if page_obj.has_other_pages %}
+    <div class="card-footer d-flex justify-content-between align-items-center">
+        <span class="pagination-wh page-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        <div class="pagination-wh">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}&q={{ search }}&status={{ status }}" class="btn-wh-outline btn-wh-sm">
+                <i class="fa-solid fa-chevron-left"></i> Previous
+            </a>
+            {% endif %}
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&q={{ search }}&status={{ status }}" class="btn-wh-outline btn-wh-sm">
+                Next <i class="fa-solid fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

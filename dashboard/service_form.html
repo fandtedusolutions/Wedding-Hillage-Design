@@ -1,0 +1,219 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}{% if is_edit %}Edit{% else %}Add{% endif %} {{ config.name_singular }}{% endblock %}
+{% block page_title %}{% if is_edit %}Edit{% else %}Add New{% endif %} {{ config.name_singular }}{% endblock %}
+{% block page_subtitle %}
+<p class="page-subtitle">{% if is_edit %}Update existing record{% else %}Create a new record{% endif %}</p>
+{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% if is_edit %}{% url 'dashboard_model_detail' slug=config.slug pk=obj.pk %}{% else %}{% url 'dashboard_model_list' slug=config.slug %}{% endif %}" class="btn-wh-outline btn-wh-sm">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="dashboard-card">
+    <div class="card-header">
+        <h5>
+            <i class="fa-solid fa-{% if is_edit %}pen-to-square{% else %}plus-circle{% endif %} me-2" style="color: var(--wh-accent);"></i>
+            {% if is_edit %}Edit {{ config.name_singular }}{% else %}New {{ config.name_singular }}{% endif %}
+        </h5>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data" novalidate id="service-form">
+            {% csrf_token %}
+
+            <div class="form-section-title">
+                <i class="fa-solid fa-house"></i> Home Page
+            </div>
+            <div class="row g-4 mb-2">
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                    {{ form.title }}
+                    {% for error in form.title.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.label.id_for_label }}">{{ form.label.label }}</label>
+                    {{ form.label }}
+                    <div class="form-text">{{ form.label.help_text }}</div>
+                    {% for error in form.label.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.home_image.id_for_label }}">{{ form.home_image.label }}</label>
+                    {{ form.home_image }}
+                    {% for error in form.home_image.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.home_description.id_for_label }}">{{ form.home_description.label }}</label>
+                    {{ form.home_description }}
+                    <div class="form-text">{{ form.home_description.help_text }}</div>
+                    {% for error in form.home_description.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+            </div>
+
+            <div class="form-section-title mt-2">
+                <i class="fa-solid fa-file-lines"></i> Services Page
+            </div>
+            <div class="row g-4 mb-2">
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.detail_image_1.id_for_label }}">{{ form.detail_image_1.label }}</label>
+                    {{ form.detail_image_1 }}
+                    <div class="form-text">{{ form.detail_image_1.help_text }}</div>
+                    {% for error in form.detail_image_1.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="col-md-6">
+                    <div class="service-media-panel">
+                        <label class="form-label">{{ form.detail_media_type.label }}</label>
+                        <div class="detail-media-type-group" id="detail-media-type-group">
+                            {% for option in form.detail_media_type %}
+                            <label class="detail-media-type-option">
+                                {{ option.tag }}
+                                <span>{{ option.choice_label }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <div class="form-text mb-3">{{ form.detail_media_type.help_text }}</div>
+                        {% for error in form.detail_media_type.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+
+                        <label class="form-label" for="{{ form.detail_media.id_for_label }}">{{ form.detail_media.label }}</label>
+                        {{ form.detail_media }}
+                        <div class="form-text" id="detail-media-hint">Upload an image file for the right column.</div>
+                        {% for error in form.detail_media.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="{{ form.detail_content.id_for_label }}">{{ form.detail_content.label }}</label>
+                    <div class="html-editor-wrap">
+                        {{ form.detail_content }}
+                    </div>
+                    <div class="form-text">Use the editor toolbar for fonts, colors, sizes, lists, links, and HTML formatting.</div>
+                    {% for error in form.detail_content.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+            </div>
+
+            <div class="form-section-title mt-2">
+                <i class="fa-solid fa-sliders"></i> Settings
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.order.id_for_label }}">{{ form.order.label }}</label>
+                    {{ form.order }}
+                    {% for error in form.order.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                    <div class="form-check mb-2">
+                        {{ form.is_active }}
+                        <label class="form-check-label" for="{{ form.is_active.id_for_label }}">{{ form.is_active.label }}</label>
+                    </div>
+                    {% for error in form.is_active.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+            </div>
+
+            <hr style="border-color: var(--wh-border-light); margin: 1.75rem 0;">
+            <div class="d-flex flex-wrap gap-2">
+                <button type="submit" class="btn-wh-primary">
+                    <i class="fa-solid fa-{% if is_edit %}floppy-disk{% else %}plus{% endif %}"></i>
+                    {% if is_edit %}Save Changes{% else %}Create {{ config.name_singular }}{% endif %}
+                </button>
+                {% if not is_edit %}
+                <button type="submit" name="save_and_add_another" value="1" class="btn-wh-outline-gold">
+                    <i class="fa-solid fa-plus"></i> Save and Add Another
+                </button>
+                {% endif %}
+                <a href="{% url 'dashboard_model_list' slug=config.slug %}" class="btn-wh-outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.ckeditor.com/4.22.1/full-all/contents.css">
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
+<script>
+(function () {
+    const mediaInput = document.getElementById('id_detail_media');
+    const typeInputs = document.querySelectorAll('input[name="detail_media_type"]');
+    const hint = document.getElementById('detail-media-hint');
+    const options = document.querySelectorAll('.detail-media-type-option');
+
+    function setActiveOption() {
+        options.forEach(function (label) {
+            const input = label.querySelector('input[type="radio"]');
+            label.classList.toggle('is-active', input && input.checked);
+        });
+    }
+
+    function updateMediaField() {
+        const selected = document.querySelector('input[name="detail_media_type"]:checked');
+        if (!selected || !mediaInput) return;
+
+        if (selected.value === 'video') {
+            mediaInput.accept = 'video/*';
+            if (hint) hint.innerHTML = '<i class="fa-solid fa-circle-info me-1"></i>Upload a video file (mp4, webm, mov).';
+        } else {
+            mediaInput.accept = '.jpg,.jpeg,.png,.gif,.webp,image/jpeg,image/png,image/gif,image/webp';
+            if (hint) hint.innerHTML = '<i class="fa-solid fa-circle-info me-1"></i>Upload JPG, PNG, GIF or WEBP only. Images are automatically converted to WebP.';
+        }
+        setActiveOption();
+    }
+
+    typeInputs.forEach(function (input) {
+        input.addEventListener('change', updateMediaField);
+    });
+
+    updateMediaField();
+
+    if (window.CKEDITOR && document.getElementById('id_detail_content')) {
+        CKEDITOR.replace('id_detail_content', {
+            height: 420,
+            versionCheck: false,
+            allowedContent: true,
+            extraPlugins: 'colorbutton,colordialog,font,justify,div',
+            font_names:
+                'Arial/Arial, Helvetica, sans-serif;' +
+                'Comic Sans MS/Comic Sans MS, cursive;' +
+                'Courier New/Courier New, Courier, monospace;' +
+                'Georgia/Georgia, serif;' +
+                'Lucida Sans Unicode/Lucida Sans Unicode, Lucida Grande, sans-serif;' +
+                'Montserrat/Montserrat, sans-serif;' +
+                'Noto Serif/Noto Serif, serif;' +
+                'Tahoma/Tahoma, Geneva, sans-serif;' +
+                'Times New Roman/Times New Roman, Times, serif;' +
+                'Trebuchet MS/Trebuchet MS, Helvetica, sans-serif;' +
+                'Verdana/Verdana, Geneva, sans-serif',
+            fontSize_sizes: '8/8px;9/9px;10/10px;11/11px;12/12px;14/14px;16/16px;18/18px;20/20px;22/22px;24/24px;26/26px;28/28px;36/36px;48/48px;72/72px',
+            colorButton_colors: '2D3D1D,BD6C25,DFAA6A,914909,4D585D,000000,FFFFFF,FF0000,00FF00,0000FF,FFFF00,00FFFF,FF00FF,C0C0C0,808080',
+            colorButton_enableMore: true,
+            toolbar: [
+                { name: 'document', items: ['Source', '-', 'Preview', 'Print'] },
+                { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
+                { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll'] },
+                '/',
+                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+                { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                { name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar'] },
+                '/',
+                { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                { name: 'colors', items: ['TextColor', 'BGColor'] },
+                { name: 'tools', items: ['Maximize', 'ShowBlocks'] }
+            ]
+        });
+
+        const serviceForm = document.getElementById('service-form');
+        if (serviceForm) {
+            serviceForm.addEventListener('submit', function () {
+                if (CKEDITOR.instances.id_detail_content) {
+                    CKEDITOR.instances.id_detail_content.updateElement();
+                }
+            });
+        }
+    }
+})();
+</script>
+{% endblock %}

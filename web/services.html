@@ -1,0 +1,20 @@
+{% extends "web/partials/base.html" %}
+{% load static %}
+
+{% block title %}Services | Wedding Hillage{% endblock %}
+
+{% block content %}
+<div class="about-header mt-5">
+    <div class="container">
+        <figure class="sis-reveal">
+            <img src="{% static 'web/image/services-header.png' %}" class="img-fluid cover-image-inner" alt="Services">
+        </figure>
+    </div>
+</div>
+
+{% for service in services %}
+{% include "web/partials/service_detail_block.html" %}
+{% empty %}
+<p class="text-center py-5">No services available yet. Please add services from the dashboard.</p>
+{% endfor %}
+{% endblock %}
